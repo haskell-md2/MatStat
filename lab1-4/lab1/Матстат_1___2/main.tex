@@ -1,0 +1,169 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cmap}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry} % Меняем поля страницы
+\geometry{left=1.5cm}% левое поле
+\geometry{right=2cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+\emergencystretch 3em
+
+\usepackage{graphicx}%Вставка картинок правильная
+\usepackage{float}%"Плавающие" картинки
+\usepackage{wrapfig}%Обтекание фигур (таблиц, картинок и прочего)
+\usepackage{amsfonts} 
+\usepackage{mathtools}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\pyf}{m}
+ {
+  \texttt
+   {
+    \tl_set:Nn \l_tmpa_tl { #1 }
+    \tl_replace_all:Nen \l_tmpa_tl { \char_generate:nn { `_ } { 8 } } { \_ }
+    \tl_use:N \l_tmpa_tl
+   }
+ }
+\cs_generate_variant:Nn \tl_replace_all:Nnn { Ne }
+\ExplSyntaxOff
+
+\newtheorem{theorem}{Теорема}
+
+\newcommand{\fo}[1]{$\boldsymbol{#1}$}
+\newcommand{\Fo}[1]{$$\boldsymbol{#1}$$}
+
+\newcommand{\ro}[1]{%
+  \xrightarrow{\mathmakebox[\rowidth]{#1}}%
+}
+
+
+
+\begin{document}
+
+    \begin{titlepage}
+    \LARGE
+        \begin{center}
+            Санкт-Петербургский Политехнический \\ университет имени Петра Великого
+
+            \vspace{8em}
+            
+            Отчёт по лабораторной работе №1 \\
+            \vspace{1em}
+            \textbf{Гистограммы и плотности распределений}
+            \end{center}
+            \vspace{9em}
+            \vspace{\fill}
+            Студент: Расторгуев Михаил Павлович \\
+            Группа: 5030102/30201
+
+            \vspace{5em}
+            
+            \begin{center}
+            Санкт-Петербург \\2026
+            \end{center}
+       
+
+    \end{titlepage}
+
+    \newpage
+
+    \large
+    
+    \section{Постановка задачи}
+    
+    В рамках данной лабораторной работы было необходимо:
+    \begin{itemize}
+    \item Освоить принцип группировки данных и построения гистограмм.
+        \item Сделать вывод о том, как влияет размер выборки на определение характера распределения величины с помощью гистограммы.
+    \end{itemize}
+    
+    \section{Теоретическая часть}
+    В данной работе требовалось изучить следующие распределения случайных величин:
+        \begin{enumerate}
+        \item Нормальное распределение \( N(x; 0, 1) \)
+        \[
+        f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Коши \( C(x; 0, 1) \)
+        \[
+        f(x) = \frac{1}{\pi(1 + x^2)}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Лапласа \( L\left(x; 0, \frac{1}{\sqrt{2}}\right) \)
+        \[
+        f(x) = \frac{1}{\sqrt{2}} e^{-\sqrt{2}|x|}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Пуассона \( P(k; 10) \)
+        \[
+        P(X = k) = \frac{10^k e^{-10}}{k!}, \quad k = 0, 1, 2, \dots
+        \]
+    
+        \item Равномерное распределение \( U(x; -\sqrt{3}, \sqrt{3}) \)
+        \[
+        f(x) = \frac{1}{2\sqrt{3}}, \quad x \in [-\sqrt{3}, \sqrt{3}]
+        \]
+    \end{enumerate}
+    
+    \section{Реализация}
+        Практическая часть работы была реализована на языке программирования \texttt{ Python} с использованием библиотек: \texttt{scipy,seaborn,numpy,pandas}.\\
+        Код писался в интерактивном блокноте \texttt{Jupyter Notebook}.\\\\
+        Были реализованы следующие функции:\\\\
+        \pyf{generate_and_draw(n,a,d,**param)} - функция, генерирующая набор из случайных данных и затем отображающая его на графике. На вход подаётся \pyf{n} - размер генерируемых данных; \pyf{a} - ось matplotlib, на которую следует отобразить график; \pyf{d} - распределение, по которому генерируются данные; \pyf{**param} - параметры распределения.\\\\
+        \pyf{show_different_n(d,name,**parameters)} - функция - обёртка над\\
+        \pyf{generate_and_draw}.
+        
+    \section{Результаты}
+    Ниже представлены гистограммы распределений сгенерированных выборок (синие столбики) и наложенные на них теоретические кривые плотностей распределений (оранжевые линии). 
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{1.png}
+    \caption{$N(0,1)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{2.png}
+    \caption{$C(0,1)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{3.png}
+    \caption{$L(0,\frac{1}{\sqrt{2}})$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{4.png}
+    \caption{$P(10)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{5.png}
+    \caption{$U(-\sqrt{3},\sqrt{3})$}
+    \end{figure}\\
+    
+    \section{Обсуждение}
+    Из всех графиков (кроме рис.2) отчётливо видно, что с увеличением размеров данных, их распределения стремятся к теоретическим.\\\\
+    График, представленный на Рис.2 трудно назвать информативным.\\ Дело в том, что в данной программной реализации подбор бинов осуществляется автоматически: либо по формуле $k=⌈log_2n⌉+ 1$ (для нормальных данных), либо $w = 2 \cdot IQR \cdot n^{-\frac{1}{3}}$, где IQR = межквартильный размах (75-й перцентиль минус 25-й).\\\\ На Рис.2 было автоматически выбрано второе правило. Из-за тяжёлых хвостов распределения Коши, IQR не может иметь значение, подходящее для определения ширины бинов. Таким образом, мы видим, как столбики гистограммы возвышаются над теоретической кривой.
+    \section{Выводы}
+    \begin{enumerate}
+        \item С увеличением размера выборки, распределение данных стремится к теоретическому.
+        \item От выбора ширины/количества бинов гистограммы принципиально зависит информативность графика. Не всегда можно положиться на инструменты автоматического подбора этого параметра.
+    \end{enumerate}
+    \section{Список литературы}
+    \begin{enumerate}
+        \item Документация \texttt{scipy} -  https://docs.scipy.org/doc/scipy/
+        \item Документация \texttt{seaborn} -  https://seaborn.pydata.org/
+    \end{enumerate}
+    \section{Приложение}
+    https://github.com/haskell-md2/MatStat/blob/main/lab1-4/lab1-4.ipynb - Параграф "Лабораторная 1"
+\end{document}
