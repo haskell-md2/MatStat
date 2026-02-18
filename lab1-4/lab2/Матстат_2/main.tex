@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{cmap}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{geometry} % Меняем поля страницы
+\geometry{left=1.5cm}% левое поле
+\geometry{right=2cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+\emergencystretch 3em
+
+\usepackage{graphicx}%Вставка картинок правильная
+\usepackage{float}%"Плавающие" картинки
+\usepackage{wrapfig}%Обтекание фигур (таблиц, картинок и прочего)
+\usepackage{amsfonts} 
+\usepackage{mathtools}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\pyf}{m}
+ {
+  \texttt
+   {
+    \tl_set:Nn \l_tmpa_tl { #1 }
+    \tl_replace_all:Nen \l_tmpa_tl { \char_generate:nn { `_ } { 8 } } { \_ }
+    \tl_use:N \l_tmpa_tl
+   }
+ }
+\cs_generate_variant:Nn \tl_replace_all:Nnn { Ne }
+\ExplSyntaxOff
+
+\newtheorem{theorem}{Теорема}
+
+\newcommand{\fo}[1]{$\boldsymbol{#1}$}
+\newcommand{\Fo}[1]{$$\boldsymbol{#1}$$}
+
+\newcommand{\ro}[1]{%
+  \xrightarrow{\mathmakebox[\rowidth]{#1}}%
+}
+
+
+
+\begin{document}
+
+    \begin{titlepage}
+    \LARGE
+        \begin{center}
+            Санкт-Петербургский Политехнический \\ университет имени Петра Великого
+
+            \vspace{8em}
+            
+            Отчёт по лабораторной работе №2 \\
+            \vspace{1em}
+            \textbf{Характеристики положения и рассеяния}
+            \end{center}
+            \vspace{9em}
+            \vspace{\fill}
+            Студент: Расторгуев Михаил Павлович \\
+            Группа: 5030102/30201
+
+            \vspace{5em}
+            
+            \begin{center}
+            Санкт-Петербург \\2026
+            \end{center}
+       
+
+    \end{titlepage}
+
+    \newpage
+
+    \large
+    
+    \section{Постановка задачи}
+    
+    В рамках данной лабораторной работы было необходимо:
+    \begin{itemize}
+        \item Исследовать сходимость выборочных характеристик к теоретическим при росте n.
+        \item Исследовать оценки характеристик положения на устойчивость к выбросам.
+    \end{itemize}
+    
+    \section{Теоретическая часть}
+    В данной работе требовалось изучить следующие распределения случайных величин:
+        \begin{itemize}
+        \item Нормальное распределение \( N(x; 0, 1) \)
+        \[
+        f(x) = \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Коши \( C(x; 0, 1) \)
+        \[
+        f(x) = \frac{1}{\pi(1 + x^2)}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Лапласа \( L\left(x; 0, \frac{1}{\sqrt{2}}\right) \)
+        \[
+        f(x) = \frac{1}{\sqrt{2}} e^{-\sqrt{2}|x|}, \quad x \in \mathbb{R}
+        \]
+    
+        \item Распределение Пуассона \( P(k; 5) \)
+        \[
+        P(X = k) = \frac{5^k e^{-5}}{k!}, \quad k = 0, 1, 2, \dots
+        \]
+    
+        \item Равномерное распределение \( U(x; -\sqrt{3}, \sqrt{3}) \)
+        \[
+        f(x) = \frac{1}{2\sqrt{3}}, \quad x \in [-\sqrt{3}, \sqrt{3}]
+        \]
+    \end{itemize}
+    
+    \section{Реализация}
+        Практическая часть работы была реализована на языке программирования \texttt{ Python} с использованием библиотек: \texttt{scipy,seaborn,numpy,pandas}.\\
+        Код писался в интерактивном блокноте \texttt{Jupyter Notebook}.\\\\
+        Были реализованы следующие функции:\\\\
+        \pyf{get_five_values(n,dist,**param)} - функция, генерирующая набор из случайных данных и затем считает требуемые выборочные характеристик. На вход подаётся \pyf{n} - размер генерируемых данных; \pyf{dist} - распределение, по которому генерируются данные; \pyf{**param} - параметры распределения.\\\\
+        \pyf{show_esstimates(dist,real_values,**params)} - функция - обёртка над\\
+        \pyf{get_five_values}. Дополнительный параметр \pyf{real_values} - кортеж теоретических значений для распределения \pyf{dist}.
+        
+    \section{Результаты}
+    Ниже представлены результаты подсчёта характеристик, с указанием погрешностей и теоретических значений.
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{1.png}
+    \caption{$N(0,1)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{2.png}
+    \caption{$C(0,1)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{3.png}
+    \caption{$L(0,\frac{1}{\sqrt{2}})$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{4.png}
+    \caption{$P(5)$}
+    \end{figure}\\
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{5.png}
+    \caption{$U(-\sqrt{3},\sqrt{3})$}
+    \end{figure}\\
+    
+    \section{Обсуждение}
+    Из представленных выше таблиц видно, что если характеристика определена для распределения, то с увеличением размера выборки - её среднее стремится к теоретическому значению, а дисперсия уменьшается.\\\\
+    Для распределения Коши наблюдается следующее - выборочное среднее для сгенерированных данных по нему данных отказывается сходиться при увеличении $n$. При этом медиана лишена этого недостатка. Это связано с тем, что последняя характеристика менее чувствительна к выбросам, чем среднее арифметическое.
+    
+    \section{Выводы}
+    \begin{enumerate}
+        \item С увеличением размера выборки, характеристики сходятся к теоретическим (если таковы определены).
+        \item Среднее арифметическое не всегда хорошо описывает статистическую зависимость, так как оно подвержено выбросам в данных.
+    \end{enumerate}
+    \section{Список литературы}
+    \begin{enumerate}
+        \item Документация \texttt{scipy} -  https://docs.scipy.org/doc/scipy/
+        \item Документация \texttt{seaborn} -  https://seaborn.pydata.org/
+    \end{enumerate}
+    \section{Приложение}
+    https://github.com/haskell-md2/MatStat/blob/main/lab1-4/lab1-4.ipynb - Параграф "Лабораторная 2"
+\end{document}
